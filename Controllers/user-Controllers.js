@@ -1,58 +1,79 @@
-var user=require("../Model/user")
+ var user=require("../Model/user")
+var byCrpt = require("bcrypt")
+var webToken = require("jsonwebtoken")
 
-var bcrypt=require("bcrypt")
-
-//register controller
-
-var register=async(req,res)=>{
+var register = async(req,res)=>{
     try{
-        var {userName,email,password,role}=req.body
-
-        var userExists=await user.findOne({$ :[{userName},{email}]})
+       
+        var {userName,email,password,role} = req.body 
+    
+        var userExists = await user.findOne({$or : [{userName},{email}]})
         if(userExists){
-            return res.status(400).json({message:"user exists"})
+            return res.status(400).json({message : "user exists"})
         }
-        var salt=await bcrypt.genSalt(10)
-        var hashPassword=await bcrypt.hash(password,salt)
-        var myUser=await user.create({
+       
+        var salt = await byCrpt.genSalt(10)
+        var hashPassword = await byCrpt.hash(password,salt)
+     
+        var myUser = await user.create({
             userName,
-            email,
-            password:hashPassword,
-            role
+            email ,
+            password  : hashPassword,
+            role 
         })
-
+        
         if(myUser){
-            return res.status(201).json({message:"created a new user"})
+         return res.status(201).json({message : "created a new user"})
+
         }else{
-           return res.status(400).json({message:"cannot create"})
+            return res.status(400).json({message : "cannot create"})
         }
+
+
+
 
 
     }catch(error){
         console.log("error",error);
-
     }
 }
 
-var login=async(req,res)=>{
+var login = async(req,res)=>{
     try{
-        var{userName,password}=req.body
-        var userThere=await user.findOne({userName})
+        
+        var {userName,password} = req.body
+        var userThere = await user.findOne({userName})
         if(!userThere){
-            return res.status(400).json({message:"invalid username and password"})
+            res.status(400).json({message : "invalid user name or password"})
         }
 
-        var ispassword=await bcrypt.compare(password,userThere.password)
-        if(!ispassword){
-            return res.status(400).json({"message":"invalid username and password"})
+        var isPassword = await byCrpt.compare(password,userThere.password)
+        console.log(isPassword);
+        if(!isPassword){
+            res.status(400).json({message : "invalid user name or password"})
         }
+       
+
+        var ganearteToeken = webToken.sign({
+            userId : userThere._id,
+            userName : userThere.userName,
+            role : userThere.role
+
+
+
+        },process.env.JSON_WEB_TOKEN,{expiresIn : "10m"})
+        res.status(200).json({message : "login sucess",token : ganearteToeken,sucess : true})
+
+
 
 
     }catch(error){
         console.log("error",error);
     }
+
+
 }
 
-module.exports={
+module.exports = {
     register,login
 }
