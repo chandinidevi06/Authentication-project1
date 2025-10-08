@@ -1,4 +1,4 @@
-var user=require("../model/user")
+var user=require("../Model/user")
 
 var bcrypt=require("bcrypt")
 
