@@ -2,7 +2,7 @@ require("dotenv").config()
 var express=require("express")
 
 var connectToDatabase=require("./Database/db")
-var userRoute=require("./routes/user-routes")
+var userRoute=require("./Routes/user-Routes")
 
 var app=express()
 
