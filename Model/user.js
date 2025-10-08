@@ -1,5 +1,4 @@
 var mongoose=require("mongoose")
-const { GiRobotLeg } = require("react-icons/gi")
 
 var userSchema=new mongoose.Schema({
     userName:{
