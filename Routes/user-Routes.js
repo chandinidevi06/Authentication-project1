@@ -1,23 +1,21 @@
-// var express=require("express")
+var express=require("express")
 
-// var{register,login}=require("../Controllers/user-Controllers")
-// var router=express.Router()
-
-
-// router.post("/register",register)
-
-// router.get("/login",login)
-
-// module.exports=router
+var{register,login}=require("../Controllers/user-Controllers")
+var router=express.Router()
 
 
+router.get("/register",register)
+
+router.get("/login",login)
+
+module.exports=router
 
 
-const express = require("express");
-const router = express.Router();
-const { register, login } = require("../Controllers/user-Controllers");
+router.get("/register", (req, res) => {
+  res.send("Use POST method to register a user.");
+});
 
-router.post("/register", register);
-router.post("/login", login);
 
-module.exports = router;
+
+
+
