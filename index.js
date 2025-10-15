@@ -1,22 +1,27 @@
 
-
-const express = require("express");
+var express = require("express");
 require("dotenv").config();
 
-const connectToDatabase = require("./Database/db");
-const userRoute = require("./Routes/user-Routes");
+var connectToDatabase = require("./Database/db");
+var userRoutes = require("./Routes/user-Routes");
+var homeRoutes = require("./Routes/home-Routes");
 
-const app = express();
+var app = express();
 
-connectToDatabase();
+connectToDatabase()
+  .then(() => {
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    app.use("/api/auth", userRoutes);
+    app.use("/api/home", homeRoutes);
 
-app.use("/api/auth", userRoute);
+    var PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log("Server is running");
+    });
+  })
+  .catch((err) => {
+    console.error("Unable to start server due to DB connection error:", err);
+  });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log("Server is running");
-});

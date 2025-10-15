@@ -10,8 +10,8 @@ var authMiddleware=(req,res,next)=>{
 
 }
 try{
-    var decodedToken=jwt.verify(token,process.env.JSON_WEB_TOKEN)
-    req.user=jwt.decodedToken
+    var decode=jwt.verify(token,process.env.JSON_WEB_TOKEN)
+    req.user=jwt.decode
     console.log(req.user);
     next()
 }catch(error){
@@ -20,3 +20,5 @@ try{
 }
 
 module.exports=authMiddleware
+
+
