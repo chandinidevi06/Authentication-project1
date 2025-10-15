@@ -1,24 +1,22 @@
-require("dotenv").config()
-var express=require("express")
-
-var connectToDatabase=require("./Database/db")
-var userRoute=require("./Routes/user-Routes")
-
-var app=express()
 
 
-connectToDatabase()
+const express = require("express");
+require("dotenv").config();
 
-app.use(express.json())
-app.use("/api/auth", userRoute);
+const connectToDatabase = require("./Database/db");
+const userRoute = require("./Routes/user-Routes");
+
+const app = express();
+
+connectToDatabase();
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/auth", userRoute);
 
-var PORT=process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT,()=>{
-    console.log("the server is running");
-})
-
-
-
+app.listen(PORT, () => {
+    console.log("Server is running");
+});

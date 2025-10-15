@@ -8,7 +8,7 @@ var register = async(req,res)=>{
 
         var {userName,email,password,role} = req.body 
         
-        var userExists = await user.findOne({$:[{userName},{email}]})
+        var userExists = await user.findOne({$or:[{userName},{email}]})
         if(userExists){
             return res.status(400).json({message : "user exists"})
         }
@@ -69,5 +69,7 @@ var login = async(req,res)=>{
 module.exports = {
     register,login
 }
+
+
 
 
