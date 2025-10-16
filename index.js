@@ -1,4 +1,3 @@
-
 var express = require("express");
 require("dotenv").config();
 
@@ -22,6 +21,7 @@ connectToDatabase()
     });
   })
   .catch((err) => {
-    console.error("Unable to start server due to DB connection error:", err);
+    console.error("connect to database", err);
   });
+
 

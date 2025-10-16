@@ -1,7 +1,7 @@
 
  var express = require("express")
 
- var { register, login } = require("../Controllers/user-Controllers")
+ var {register, login } = require("../Controllers/user-Controllers")
 
  var router = express.Router()
 
